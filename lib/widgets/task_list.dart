@@ -1,7 +1,5 @@
-import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_todoo/models/task.dart';
 import 'package:flutter_todoo/models/task_data.dart';
 import 'package:provider/provider.dart';
 

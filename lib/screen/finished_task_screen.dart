@@ -1,17 +1,13 @@
+
 import 'package:flutter/material.dart';
-import 'package:flutter_todoo/models/task_data.dart';
-import 'package:flutter_todoo/screen/finished_task_screen.dart';
-import 'package:flutter_todoo/widgets/task_list.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_todoo/widgets/task_list_finished.dart';
 import 'package:provider/provider.dart';
 
-import 'add_task_screen.dart';
+import '../models/task_data.dart';
 
-class TaskScreen extends StatefulWidget {
-  @override
-  _TaskScreenState createState() => _TaskScreenState();
-}
-
-class _TaskScreenState extends State<TaskScreen> {
+class FinishedTaskScreen extends StatelessWidget {
+  const FinishedTaskScreen({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,20 +22,17 @@ class _TaskScreenState extends State<TaskScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                CircleAvatar(
-                  child: Icon(
-                    Icons.list,
-                    size: 30.0,
-                    color: Colors.amberAccent,
-                  ),
-                  backgroundColor: Colors.white,
-                  radius: 30.0,
+                BackButton(
+                  color: Colors.white,
+                  onPressed: (){
+                    Navigator.pop(context);
+                  },
                 ),
                 SizedBox(
                   height: 20.0,
                 ),
                 Text(
-                  'Todoo',
+                  'Finished Task',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 50.0,
@@ -47,22 +40,13 @@ class _TaskScreenState extends State<TaskScreen> {
                   ),
                 ),
                 Text(
-                  '${Provider.of<TaskData>(context).tasks.length} Tasks',
+                  '${Provider.of<TaskData>(context).finishedTask.length} Tasks',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 20.0,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => FinishedTaskScreen()),
-                    );
-                  },
-                  child: Text('Finished >'),
-                )
               ],
             ),
           ),
@@ -76,18 +60,10 @@ class _TaskScreenState extends State<TaskScreen> {
                     topLeft: Radius.circular(30.0),
                     topRight: Radius.circular(30.0)),
               ),
-              child: TaskList(),
+              child: TaskListFinished(),
             ),
           ),
         ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.red[300],
-        onPressed: () {
-          showModalBottomSheet(
-              context: context, builder: (context) => AddTaskScreen());
-        },
-        child: Icon(Icons.add),
       ),
     );
   }

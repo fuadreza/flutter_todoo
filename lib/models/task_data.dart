@@ -1,7 +1,8 @@
-import 'dart:collection';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_todoo/models/task.dart';
+
+import 'task.dart';
 
 class TaskData extends ChangeNotifier{
 
@@ -11,8 +12,16 @@ class TaskData extends ChangeNotifier{
     Task(name: 'Love yourself'),
   ];
 
+  List<Task> _finishedTask = [
+    Task(name: 'Take a note', isDone: true)
+  ];
+
   List<Task> get tasks {
     return _tasks;
+  }
+
+  List<Task> get finishedTask {
+    return _finishedTask;
   }
 
   void addTask(Task task){
@@ -21,6 +30,7 @@ class TaskData extends ChangeNotifier{
   }
 
   void removeTask(Task task){
+    finishedTask.add(task);
     tasks.remove(task);
     notifyListeners();
   }
