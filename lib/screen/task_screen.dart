@@ -12,6 +12,13 @@ class TaskScreen extends StatefulWidget {
 }
 
 class _TaskScreenState extends State<TaskScreen> {
+  String username = 'anonymous';
+
+  @override
+  void initState() {
+    super.initState();
+    showDialogUsername();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,18 +29,51 @@ class _TaskScreenState extends State<TaskScreen> {
         children: [
           Container(
             padding: EdgeInsets.only(
-                top: 60.0, left: 30.0, right: 30.0, bottom: 30.0),
+                top: 60.0, left: 30.0, right: 30.0, bottom: 10.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                CircleAvatar(
-                  child: Icon(
-                    Icons.list,
-                    size: 30.0,
-                    color: Colors.amberAccent,
-                  ),
-                  backgroundColor: Colors.white,
-                  radius: 30.0,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    CircleAvatar(
+                      child: Icon(
+                        Icons.list,
+                        size: 30.0,
+                        color: Colors.amberAccent,
+                      ),
+                      backgroundColor: Colors.white,
+                      radius: 30.0,
+                    ),
+                    SizedBox(width: 16),
+                    Flexible(
+                      child: Container(
+                        child: Text(
+                          'Hello $username',
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                              fontSize: 28,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle
+                      ),
+                      child: InkWell(
+                        onTap: (){
+                          showDialogUsername();
+                        },
+                        child: Icon(
+                          Icons.edit,
+                          size: 24.0,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
                 SizedBox(
                   height: 20.0,
@@ -58,7 +98,8 @@ class _TaskScreenState extends State<TaskScreen> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => FinishedTaskScreen()),
+                      MaterialPageRoute(
+                          builder: (context) => FinishedTaskScreen()),
                     );
                   },
                   child: Text('Finished >'),
@@ -85,10 +126,40 @@ class _TaskScreenState extends State<TaskScreen> {
         backgroundColor: Colors.red[300],
         onPressed: () {
           showModalBottomSheet(
-              context: context, builder: (context) => AddTaskScreen());
+            context: context,
+            isScrollControlled: true,
+            builder: (context) => AddTaskScreen(),
+          );
         },
         child: Icon(Icons.add),
       ),
     );
+  }
+
+  void showDialogUsername() {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await showDialog<String>(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+          title: Text("Input your name"),
+          content: TextField(
+            autofocus: true,
+            onChanged: (text) {
+              setState(() {
+                username = text;
+              });
+            },
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: new Text("Save"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        ),
+      );
+    });
   }
 }
